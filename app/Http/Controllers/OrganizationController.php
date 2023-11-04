@@ -13,7 +13,6 @@ class OrganizationController extends Controller
     public function index(Request $request)
     {
         // - Laravel HTTP CLient setelah token diperlukan
-        $current_url = url()->current();
         $url = static::API_URL;
         if ($request->input('page')) {
             $url .= "?page=" . $request->input('page');
@@ -22,23 +21,24 @@ class OrganizationController extends Controller
             'Accept' => 'application/json',
             'Content-type' => 'application/json',
             'Authorization' => 'Bearer 4|p29fozrMpF86xBtTXa3FjrOAnx4vd2DM3WcQ3ncDbd94b105',
-        ])->get($url);
+            ])->get($url);
+            $current_url = url()->current();
         $data = $response['data'];
         foreach ($data['links'] as $key => $value) {
             $data['links'][$key]['new_url'] = str_replace(static::API_URL, $current_url, $value['url']);
         };
 
         // - Laravel HTTP CLient sebelum token diperlukan
-        $current_url = url()->current();
-        $url = static::API_URL;
-        if ($request->input('page')) {
-            $url .= "?page=" . $request->input('page');
-        };
-        $response = Http::get($current_url);
-        $data = $response['data'];
-        foreach ($data['links'] as $key => $value) {
-            $data['links'][$key]['new_url'] = str_replace(static::API_URL, $current_url, $value['url']);
-        };
+        // $current_url = url()->current();
+        // $url = static::API_URL;
+        // if ($request->input('page')) {
+        //     $url .= "?page=" . $request->input('page');
+        // };
+        // $response = Http::get($current_url);
+        // $data = $response['data'];
+        // foreach ($data['links'] as $key => $value) {
+        //     $data['links'][$key]['new_url'] = str_replace(static::API_URL, $current_url, $value['url']);
+        // };
 
         // $response = Http::withHeaders([
         //     'Accept' => 'application/json',
